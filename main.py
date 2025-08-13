@@ -43,6 +43,10 @@ def main():
                 print("❌ Not Found (Bulunamadı)")
         
         
+        # quit
+        elif choice == "5":
+            print("Exit (Çıkış Yapılıyor)")
+            break
         
         
         
