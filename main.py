@@ -17,5 +17,11 @@ def main():
         
         choice = input("Please, Make Your Choice (Seçimini Yapın):\n")
         # add a book
-       
+        if choice == "1":
+            ISBN = input("Enter ISBN (ISBN Gir):")
+            title = input("Enter Title (Kitap Başlığını Gir):")
+            author = input("Enter Author (Yazarı Gir): ")
+            new_book = Book(ISBN= ISBN, title = title, author= author)
+            library.add_book(new_book)
+        
         
