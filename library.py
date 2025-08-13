@@ -5,6 +5,11 @@
 from book_oop import Book
 import json 
 import os 
+import httpx 
+
+
+OPEN_LIBRARY_URL = "https://openlibrary.org/isbn/"
+
 
 class Library():
     def __init__(self, file_name = "library.json"):
@@ -12,9 +17,42 @@ class Library():
         self.file_name = file_name
         self.load_books()
         
-    def add_book(self, book: Book):
-        self._book_lists.append(book)
+    # add book 
+    def add_book(self, ISBN):
+        api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json"
+        try:
+            
+            response = httpx.get(api_url)
 
+            # raise for status 4xx or 5xx (Status code için hata fırlat)
+            response.raise_for_status()
+            
+            # convert to python dict 
+            book_data = response.json()
+            
+            # title
+            title = book_data.get("title","Unknown (Bilinmiyor)")
+            
+            # return a list
+            authors = book_data.get("authors",[])
+            author_names = [author.get("key","Unknown (Bilinmiyor)") for author in authors] 
+            
+            
+            author = ",".join(author_names) if author_names else "Unknown (Bilinmiyor)"
+            
+            
+            # add a new book
+            new_book = Book(ISBN= ISBN, title = title, author= author)
+            self._book_lists.append(new_book)
+            
+        except httpx.HTTPStatusError as e:
+            print(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
+            
+        except httpx.RequestError as e:
+            print(f"Request Error (İstek Hatası): {e}")
+            
+
+    # remove book by ISBN
     def remove_book(self, ISBN):
         for book in self._book_lists:
             if book.ISBN == ISBN:
@@ -26,7 +64,7 @@ class Library():
         """ 
         O(n) Solving : Burada silinip silinmediğini boyut üzerinden anlar. 
         original_len = len(self._book_lists)
-        self._book_lists = [book for book in self._books_lists if book.ISBN != ISBN]
+        self._book_lists = [book for book in self._book_lists if book.ISBN != ISBN]
         return len(self._book_lists) < original_len 
         """
     
@@ -35,7 +73,7 @@ class Library():
             print("❌ There are no books in the library yet. (Henüz Kitap Yok)")
         else:
             for book in self._book_lists:
-                print(f"{book.__str__()}")
+                print(book) #print(f"{book.__str__()}")
             
     
     def find_book(self, ISBN):
