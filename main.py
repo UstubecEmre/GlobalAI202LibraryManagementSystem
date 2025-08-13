@@ -33,5 +33,16 @@ def main():
         elif choice == "3":
             library.list_books()
         
+        # search for book
+        elif choice == "4":
+            ISBN = input("Enter the ISBN number of the book you are looking for: ")
+            book = library.find_book(ISBN)
+            if book:
+                print("✅Found (Bulundu):", book)
+            else:
+                print("❌ Not Found (Bulunamadı)")
+        
+        
+        
         
         
