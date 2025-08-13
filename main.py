@@ -29,5 +29,9 @@ def main():
             ISBN = input("Enter the ISBN number of the book you want to delete (Silmek İstediğin Kitabın ISBN Numarasını Gir): ")
             library.remove_book(ISBN)
         
+        # list books
+        elif choice == "3":
+            library.list_books()
+        
         
         
