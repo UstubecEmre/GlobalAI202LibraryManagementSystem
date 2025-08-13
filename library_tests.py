@@ -7,7 +7,7 @@ from library import Library
 from book_oop import Book
 
 def create_library_sample():
-    library = Library(file_name= "library.json")
+    library = Library(file_name= "test_library.json")
     library._book_lists = [] # set null list
     # create a new Book instance
     test_book = Book("12345679123","Test Book", "Test Author")
@@ -18,8 +18,49 @@ def create_library_sample():
     return library 
 
     
-def test_book_add():
-    pass 
+def test_book_add(monkeypatch):
+    library = Library(file_name= "test_library.json")
+    
+    # Mock => Bu, istediğimiz metot ve özellikleri taklit edebileceğimiz boş bir sahte nesne.
+    mock_response = Mock()
+    
+    # raise for status 
+    mock_response.raise_for_status = Mock()
+    
+    # create a dict
+    mock_response.json = Mock(
+        # The return_value parameter specifies the value that this method will return.
+        # => return_value parametresi bu metodun döndüreceği değeri belirliyor.
+        
+        return_value={
+            "title": "Efficient Library Management System",
+            "authors": [{"key":"Emre Üstübeç"}]
+        
+        }
+    )
+    
+    
+    """ 
+    # monkeypatch: 
+    monkeypatch.setattr temporarily modifies the httpx.get function. ( monkeypatch.setattr ile httpx.get fonksiyonunun gecici olarak degistirilmesini saglar.)
+
+    Now, when the code httpx.get(...) is called, mock_response will be returned instead of the actual HTTP request.
+    (Artik kod httpx.get(...) cagirildiginda gercek HTTP istegi yerine  mock_response donecektir)
+    
+    """ 
+    monkeypatch.setattr("httpx.get", lambda url: mock_response)
+    
+    library.add_book("1234567891230")
+    
+    # check length of book list
+    assert len(library._book_lists) == 1
+    
+    # select first item
+    book = library._book_lists[0]
+    
+    # assert title and author
+    assert book.title == "Efficient Library Management System"
+    assert book.author == "Emre Üstübeç" 
 
 def test_remove_book():
     pass 
