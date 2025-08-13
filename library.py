@@ -1,8 +1,10 @@
 #%% Create a library class with its methods
 #%% 2. Create a Library Class
 
-
+# load required libraries (Gerekli kütüphaneleri import et)
 from book_oop import Book
+import json 
+import os 
 
 class Library():
     def __init__(self, file_name = "library.json"):
@@ -32,7 +34,21 @@ class Library():
                 
     
     def load_books(self):
-        pass
+        if os.path.exists(self.file_name):
+                with open(self.file_name, mode= "r", encoding= "utf-8") as file:
+                    data = json.load(file)
+                    # self._book_lists = [Book(**book_data) for book_data in data]    
+                
+                # Create a null list, and add new book objects
+                self._book_lists = []
+                
+                
+                for book_data in data:
+                    book_obj = Book(**book_data) # convert json format
+                    self._book_lists.append(book_obj)
+        else:
+            # return null list (Boş liste döndür)
+            self._book_lists = []               
     
     def save_books(self):
         pass 
