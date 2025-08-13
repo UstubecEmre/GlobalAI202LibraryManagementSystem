@@ -4,6 +4,7 @@
 from book_oop import Book
 from library import Library
 
+
 def main():
     library = Library()
     # create aninfinite loop
@@ -19,12 +20,18 @@ def main():
         # add a book
         if choice == "1":
             ISBN = input("Enter ISBN (ISBN Gir):")
+            """ 
             title = input("Enter Title (Kitap Başlığını Gir):")
             author = input("Enter Author (Yazarı Gir): ")
             new_book = Book(ISBN= ISBN, title = title, author= author)
-            library.add_book(new_book)
-            print("✅ Book added successfully (Kitap başarıyla eklendi)")
-            library.save_books()
+            """
+            # use try-except to prevent the program from crashing (Program çökmesin diye)
+            try:
+                library.add_book(ISBN)
+                print("✅ Book added successfully (Kitap başarıyla eklendi)")
+                library.save_books()
+            except Exception as e:
+                print(f"❌ Could not add book (Kitap Eklenemedi).The reason is (Sebebi ise): {e}")
         
         # remove a book
         elif choice == "2":
@@ -61,5 +68,8 @@ def main():
             print("Invalid choice. Please try again!!! (Geçersiz seçim, lütfen tekrar deneyin)")
         
 
+# check
+if "__name__" == "__main__":
+    main()
         
-        
+# %%
