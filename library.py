@@ -1,11 +1,15 @@
 #%% Create a library class with its methods
 #%% 2. Create a Library Class
+
+
+from book_oop import Book
+
 class Library():
     def __init__(self):
         self._book_lists = []
         
-    def add_book(self, book):
-        pass
+    def add_book(self, book: Book):
+        self._book_lists.append(book)
 
     def remove_book(self, ISBN):
         pass
