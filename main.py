@@ -24,4 +24,10 @@ def main():
             new_book = Book(ISBN= ISBN, title = title, author= author)
             library.add_book(new_book)
         
+        # remove a book
+        elif choice == "2":
+            ISBN = input("Enter the ISBN number of the book you want to delete (Silmek İstediğin Kitabın ISBN Numarasını Gir): ")
+            library.remove_book(ISBN)
+        
+        
         
