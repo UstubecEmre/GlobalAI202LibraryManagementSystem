@@ -23,12 +23,20 @@ def main():
             author = input("Enter Author (Yazarı Gir): ")
             new_book = Book(ISBN= ISBN, title = title, author= author)
             library.add_book(new_book)
+            print("✅ Book added successfully (Kitap başarıyla eklendi)")
+            library.save_books()
         
         # remove a book
         elif choice == "2":
             ISBN = input("Enter the ISBN number of the book you want to delete (Silmek İstediğin Kitabın ISBN Numarasını Gir): ")
-            library.remove_book(ISBN)
-        
+            if library.remove_book(ISBN):
+                print("✅ Removed (Silindi)")
+                library.save_books()
+            else:
+                print("X Book was not found (Kitap Bulunamadı)")
+                
+                
+                
         # list books
         elif choice == "3":
             library.list_books()
@@ -48,5 +56,10 @@ def main():
             print("Exit (Çıkış Yapılıyor)")
             break
         
+        # else
+        else:
+            print("Invalid choice. Please try again!!! (Geçersiz seçim, lütfen tekrar deneyin)")
+        
+
         
         
