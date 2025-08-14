@@ -189,5 +189,37 @@ def test_load_books(tmp_path):
     # Check that the library is loaded from the correct file (Dogru dosyadan mi yuklenmis kontrol et)
     assert library.file_name == str(test_file)
     
-def test_save_books():
-    pass 
+def test_save_books(tmp_path):
+    #  give an tmp_path
+    # First Step Arrange (Specify a temporary file path (Gecici bir dosya yolu belirle))
+    test_file = tmp_path/"test_library.json"
+
+    # create an instance from Library
+    library = Library(file_name=str(test_file))
+    
+    # add a book
+    library._book_lists=[
+        Book(ISBN= "0000000000003",
+             title= "I am learning python tests",
+             author= "Emre Ustubec")
+    ]
+    # Step 2 Act (Eylem)
+    # save books => call the save_books() methos
+    library.save_books()
+    
+    # Step 3 Assert (Dogrula)
+    # Has the file been created and is the content correct? (Dosya olustu mu, icerik dogru mu?)
+    assert test_file.exists()
+    
+    
+    # read the file and check it
+    book_data = json.loads(test_file.read_text(encoding = "utf-8"))
+    
+    assert book_data == [
+        {
+            "ISBN": "0000000000003",
+            "title": "I am learning python tests",
+            "author":"Emre Ustubec"
+            
+        }
+    ]
