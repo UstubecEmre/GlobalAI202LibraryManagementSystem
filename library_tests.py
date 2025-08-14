@@ -63,8 +63,31 @@ def test_book_add(monkeypatch):
     assert book.author == "Emre Üstübeç" 
 
 def test_remove_book():
-    pass 
-
+    # create an instance
+    library = create_library_sample()
+    print(f"Starting Book List (Baslangic Kitap Listesi): {library._book_lists}")
+    
+    # enter ısbn no
+    removed = library.remove_book("12345679123")
+    print(f"Was the Book (ISBN: 12345679123) deleted (Silindi mi?): {removed}")
+    
+    
+    # returns True if the book is removed, (kitap silinirse True döndür)
+    assert removed is True 
+  
+    assert len(library._book_lists) == 0
+    
+    
+    # Removing non-existing book (ISBN numarası kütüphanede yoksa)
+    not_removed = library.remove_book("147258369214")
+    
+    print(f"Was the book (ISBN:147258369214 ) deleted (Silindi mi?)")
+    
+    # assert 
+    assert not_removed is False
+    
+    print("✅ Test passed successfully. Final list: (Test Basarili, Nihali Liste: )", library._book_lists)
+    
 def test_list_books():
     pass
 
