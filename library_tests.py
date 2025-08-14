@@ -10,7 +10,7 @@ def create_library_sample():
     library = Library(file_name= "test_library.json")
     library._book_lists = [] # set null list
     # create a new Book instance
-    test_book = Book("12345679123","Test Book", "Test Author")
+    test_book = Book("1234567912345","Test Book", "Test Author")
     
     # append book_lists
     library._book_lists.append(test_book)
@@ -68,8 +68,8 @@ def test_remove_book():
     print(f"Starting Book List (Baslangic Kitap Listesi): {library._book_lists}")
     
     # enter ısbn no
-    removed = library.remove_book("12345679123")
-    print(f"Was the Book (ISBN: 12345679123) deleted (Silindi mi?): {removed}")
+    removed = library.remove_book("1234567912345")
+    print(f"Was the Book (ISBN: 1234567912345) deleted (Silindi mi?): {removed}")
     
     
     # returns True if the book is removed, (kitap silinirse True döndür)
@@ -79,21 +79,67 @@ def test_remove_book():
     
     
     # Removing non-existing book (ISBN numarası kütüphanede yoksa)
-    not_removed = library.remove_book("147258369214")
+    not_removed = library.remove_book("1472583692149")
     
-    print(f"Was the book (ISBN:147258369214 ) deleted (Silindi mi?)")
+    print(f"Was the book (ISBN:1472583692149) deleted (Silindi mi?)")
     
     # assert 
     assert not_removed is False
     
     print("✅ Test passed successfully. Final list: (Test Basarili, Nihali Liste: )", library._book_lists)
+
+
+def test_list_books(capsys):
+    """ 
+    capsys
+    Pytest'in yerlesik fixture'idir. 
     
-def test_list_books():
-    pass
+    Ekrana (stdout) veya hatalara (stderr) yazilan tum ciktilari yakalar. 
+    
+    Böylece print() ile yazilan metinleri test etmemize olanak saglar.
+    
+    """
+    # call the create_library_sample
+    library = create_library_sample()
+    
+    # list books (Kitaplari listele)
+    library.list_books()
+    
+    
+    # readouterr() => 
+    """
+    capsys.readouterr() ile yakalanan tum standart cikti ve hata mesajlarini almamizi saglayan fonsiyondur.
+
+    Donen deger bir namedtuple idir:
+
+    captured.out → stdout (ekrana yazilan normal mesajlari ifade eder)
+
+    captured.err → stderr (ekrana yazilan hata mesajlarini ifade eder)
+    
+    """
+    
+    captured = capsys.readouterr() 
+    assert "Test Book" in captured.out 
+    assert "Succesfully Viewed (Basariyla Goruntulendi)" in captured.out
+    
 
 def test_find_book():
-    pass
-
+    #call the create library sample
+    library = create_library_sample()
+    
+    # enter test book  ISBN
+    found = library.find_book("1234567912345")
+    # return True
+    assert found is not None
+    
+    # valid the title (Basligi dogrula) 
+    assert found.title =="Test Book"
+   
+   # if enter the wrong ISBN number
+    not_found = library.find_book("1472589635400")
+    
+    # assert not_found
+    assert not_found is None
 
 def test_load_books():
     pass
