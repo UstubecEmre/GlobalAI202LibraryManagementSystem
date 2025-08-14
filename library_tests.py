@@ -120,7 +120,8 @@ def test_list_books(capsys):
     
     captured = capsys.readouterr() 
     assert "Test Book" in captured.out 
-    assert "Succesfully Viewed (Basariyla Goruntulendi)" in captured.out
+    assert "1234567912345" in captured.out
+    assert "Test Author" in captured.out
     
 
 def test_find_book():
