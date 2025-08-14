@@ -141,8 +141,53 @@ def test_find_book():
     # assert not_found
     assert not_found is None
 
-def test_load_books():
-    pass
+def test_load_books(tmp_path):
+    #tmp_path : temp path (gecici klasor)
+    
+    # First Step: Arange (Hazirlik)
+    test_file = tmp_path/"test_library.json"
+    
+    # add some samples
+    sample_data = [
+        {
+            "ISBN": "0000000000001",
+            "title":"Pytest Introduction",
+            "author": "Emre Ustubec"    
+        },
+        
+        {
+            "ISBN": "0000000000002",
+            "title":"Unittest Introduction",
+            "author": "GlobalAI Community"
+            
+        }
+    ]
+    #dumps() :Convert from Python to JSON (JSON formatına donustur) 
+    
+    test_file.write_text(
+        json.dumps(sample_data, ensure_ascii=False, indent = 4),
+        encoding = "utf-8"
+    )
 
+
+    # Second Step : Act (Eylem)
+    # create an instance from Library class
+    library = Library(file_name=str(test_file))
+    
+    # Third Step: Assert (Dogrula)
+    # assert number of books
+    assert len(library._book_lists) == 2
+    
+    # Verify that all items are derived from the Book class) (Book sinifindan mi turetilmisler)
+    assert all(isinstance(book, Book) for book in library._book_lists)
+
+    # assert the attributes of books (Kitabin ozniteliklerini dogrula)
+    assert library._book_lists[0].ISBN == "0000000000001"      
+    assert library._book_lists[0].author == "Emre Ustubec"      
+    assert library._book_lists[0].title == "Pytest Introduction"      
+    
+    # Check that the library is loaded from the correct file (Dogru dosyadan mi yuklenmis kontrol et)
+    assert library.file_name == str(test_file)
+    
 def test_save_books():
     pass 
