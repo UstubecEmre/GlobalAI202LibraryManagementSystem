@@ -21,7 +21,7 @@ class Library():
     def add_book(self, ISBN):
         api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json"
         try:
-            
+            print(f"An API call is being made. (API Cagrisi Yapiliyor) {api_url}")
             response = httpx.get(api_url)
 
             # raise for status 4xx or 5xx (Status code için hata fırlat)
@@ -29,14 +29,22 @@ class Library():
             
             # convert to python dict 
             book_data = response.json()
+            # for debug
+            print(f"API Response: {book_data}")
             
             # title
             title = book_data.get("title","Unknown (Bilinmiyor)")
             
             # return a list
             authors = book_data.get("authors",[])
-            author_names = [author.get("key","Unknown (Bilinmiyor)") for author in authors] 
+            author_names = []
+            for author in author_names:
+                key = author.get("key", "Unknown (Bilinmiyor)")
+                author_names.append(key.replace("/authors/", ""))
             
+            
+            # author_names = [author.get("key","Unknown (Bilinmiyor)") for author in authors] 
+            # api does not this way,
             
             author = ",".join(author_names) if author_names else "Unknown (Bilinmiyor)"
             
@@ -44,7 +52,8 @@ class Library():
             # add a new book
             new_book = Book(ISBN= ISBN, title = title, author= author)
             self._book_lists.append(new_book)
-            
+            # add main menu
+            #print(f"Book added (Kitap Eklendi) {title} - {author}")
         except httpx.HTTPStatusError as e:
             print(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
             
