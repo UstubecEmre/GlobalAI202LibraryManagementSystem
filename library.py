@@ -13,13 +13,17 @@ OPEN_LIBRARY_URL = "https://openlibrary.org/isbn/"
 
 class Library():
     def __init__(self, file_name = "library.json"):
-        self._book_lists = []
         self.file_name = file_name
+        self._book_lists = []
         self.load_books()
         
     # add book 
     def add_book(self, ISBN):
-        api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json"
+        # api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json" => get an error 302 status code
+        
+        # use correct Endpoint
+        api_url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{ISBN}&format=json&jscmd=data"
+
         try:
             #print(f"An API call is being made. (API Cagrisi Yapiliyor) {api_url}")
             response = httpx.get(api_url)
@@ -29,20 +33,21 @@ class Library():
             
             # convert to python dict 
             book_data = response.json()
+            
+            # use GET and get book_info by ISBN
+            book_info = book_data.get(f"ISBN: {ISBN}", {})
             # for debug
            # print(f"API Response: {book_data}")
             
-            # title
-            title = book_data.get("title","Unknown (Bilinmiyor)")
+            # GET title 
+            title = book_info.get("title","Unknown (Bilinmiyor)")
             
-            # return a list
-            authors = book_data.get("authors",[])
-            author_names = []
-            for author in author_names:
-                key = author.get("key", "Unknown (Bilinmiyor)")
-                author_names.append(key.replace("/authors/", ""))
+            # GET authors
+            authors = book_info.get("authors","Unknown (Bilinmiyor)")
             
-            
+           # use list comp to get author names
+            author_names = [author.get("name","Unknown (Bilinmiyor)") for author in authors]
+           
             # author_names = [author.get("key","Unknown (Bilinmiyor)") for author in authors] 
             # api does not this way,
             
@@ -51,6 +56,7 @@ class Library():
             
             # add a new book
             new_book = Book(ISBN= ISBN, title = title, author= author)
+            
             self._book_lists.append(new_book)
             # add main menu
             #print(f"Book added (Kitap Eklendi) {title} - {author}")
@@ -77,6 +83,7 @@ class Library():
         return len(self._book_lists) < original_len 
         """
     
+    # list books in the book_lists
     def list_books(self):
         if not self._book_lists:
             print("❌ There are no books in the library yet. (Henüz Kitap Yok)")
@@ -85,13 +92,14 @@ class Library():
                 print(book) #print(f"{book.__str__()}")
             
     
+    # find book by ISBN
     def find_book(self, ISBN):
         for book in self._book_lists:
             if book.ISBN == ISBN:
                 return book
         return None
                 
-    
+    # load books
     def load_books(self):
         self._book_lists = []
         if os.path.exists(self.file_name):
@@ -101,13 +109,10 @@ class Library():
                     # self._book_lists = [Book(**book_data) for book_data in data]    
                 
                 # Create a null list, and add new book objects
-                
-                
-                
                         for book_data in data:
                             book_obj = Book(**book_data) # convert json format
                             self._book_lists.append(book_obj)
-                    except:
+                    except (json.JSONDecodeError, TypeError):
             # return null list (Boş liste döndür)
                         self._book_lists = []               
 
