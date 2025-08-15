@@ -26,7 +26,7 @@ def get_books():
 
 """ 
 @app.get("/books/{ISBN}")
-def get_books_by_ISBN(ISBN):
+def get_book_by_ISBN(ISBN):
     clean_ISBN = ISBN.replace("-","")
     # iterate each book item (Her bir kitap objesi icin don)
     for book in library_instance._book_lists:
@@ -37,11 +37,16 @@ def get_books_by_ISBN(ISBN):
 
 
 @app.get("/books/{ISBN}")
-def get_books_by_ISBN(ISBN: str):
+def get_book_by_ISBN(ISBN: str):
     book = library_instance.find_book(ISBN.replace("-",""))
     if book:
         return {"book":book.__dict__} # convert to JSON object
     else:
-        return {"book":"Not Found(Bulunamadi)"}
+        return {"error":"Book Not Found(Kitap Bulunamadi)"}
     
 
+@app.post("/books/{ISBN}")
+def add_book_by_ISBN(ISBN:str):
+    # add_book method cleans ISBN ()
+    library_instance.add_book(ISBN)
+    return {"message":"Added book (if not already exists) (Kitap EKlendi (Daha onceden yoksa))"}
