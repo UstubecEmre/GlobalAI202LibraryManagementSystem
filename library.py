@@ -21,8 +21,10 @@ class Library():
     def add_book(self, ISBN):
         # api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json" => get an error 302 status code
         
+        # replace "-" to ""
+        clean_ISBN = ISBN.replace("-","")
         # use correct Endpoint
-        api_url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{ISBN}&format=json&jscmd=data"
+        api_url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{clean_ISBN}&format=json&jscmd=data"
 
         try:
             #print(f"An API call is being made. (API Cagrisi Yapiliyor) {api_url}")
@@ -35,7 +37,7 @@ class Library():
             book_data = response.json()
             
             # use GET and get book_info by ISBN
-            book_info = book_data.get(f"ISBN: {ISBN}", {})
+            book_info = book_data.get(f"ISBN:{clean_ISBN}", {})
             # for debug
            # print(f"API Response: {book_data}")
             
@@ -46,18 +48,32 @@ class Library():
             authors = book_info.get("authors","Unknown (Bilinmiyor)")
             
            # use list comp to get author names
-            author_names = [author.get("name","Unknown (Bilinmiyor)") for author in authors]
            
+           # unfortunately, ı got an error message. 
+           
+           # check data types of author_names objects => str' object has no attribute 'get'
+            author_names = []
+            
+            # is authors object  a list instance 
+            if isinstance(authors, list):
+                for author in authors:
+                    if isinstance(author, dict):
+                        name = author.get("name", "Unknown (Bilinmiyor)")
+                        author_names.append(name)
+                        
             # author_names = [author.get("key","Unknown (Bilinmiyor)") for author in authors] 
             # api does not this way,
             
             author = ",".join(author_names) if author_names else "Unknown (Bilinmiyor)"
-            
-            
+             
             # add a new book
-            new_book = Book(ISBN= ISBN, title = title, author= author)
             
-            self._book_lists.append(new_book)
+            new_book = Book(ISBN= clean_ISBN, title = title, author= author)
+            # check, has already exists
+            if clean_ISBN in [book.ISBN for book in self._book_lists]:
+                print("This book has already exists")
+            else:    
+                self._book_lists.append(new_book)
             # add main menu
             #print(f"Book added (Kitap Eklendi) {title} - {author}")
         except httpx.HTTPStatusError as e:
