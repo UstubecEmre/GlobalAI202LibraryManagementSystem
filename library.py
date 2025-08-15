@@ -21,7 +21,7 @@ class Library():
     def add_book(self, ISBN):
         api_url = f"{OPEN_LIBRARY_URL}{ISBN}.json"
         try:
-            print(f"An API call is being made. (API Cagrisi Yapiliyor) {api_url}")
+            #print(f"An API call is being made. (API Cagrisi Yapiliyor) {api_url}")
             response = httpx.get(api_url)
 
             # raise for status 4xx or 5xx (Status code için hata fırlat)
@@ -30,7 +30,7 @@ class Library():
             # convert to python dict 
             book_data = response.json()
             # for debug
-            print(f"API Response: {book_data}")
+           # print(f"API Response: {book_data}")
             
             # title
             title = book_data.get("title","Unknown (Bilinmiyor)")
@@ -93,22 +93,24 @@ class Library():
                 
     
     def load_books(self):
+        self._book_lists = []
         if os.path.exists(self.file_name):
                 with open(self.file_name, mode= "r", encoding= "utf-8") as file:
-                    data = json.load(file)
+                    try:
+                        data = json.load(file)
                     # self._book_lists = [Book(**book_data) for book_data in data]    
                 
                 # Create a null list, and add new book objects
-                self._book_lists = []
                 
                 
-                for book_data in data:
-                    book_obj = Book(**book_data) # convert json format
-                    self._book_lists.append(book_obj)
-        else:
+                
+                        for book_data in data:
+                            book_obj = Book(**book_data) # convert json format
+                            self._book_lists.append(book_obj)
+                    except:
             # return null list (Boş liste döndür)
-            self._book_lists = []               
-    
+                        self._book_lists = []               
+
     def save_books(self):
         
         with open(self.file_name, "w", encoding= "utf-8") as file:
