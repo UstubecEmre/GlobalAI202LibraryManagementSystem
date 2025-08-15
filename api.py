@@ -50,3 +50,12 @@ def add_book_by_ISBN(ISBN:str):
     # add_book method cleans ISBN ()
     library_instance.add_book(ISBN)
     return {"message":"Added book (if not already exists) (Kitap EKlendi (Daha onceden yoksa))"}
+
+
+@app.delete("/books/{ISBN}")
+def delete_book_by_ISBN(ISBN: str):
+    result = library_instance.remove_book(ISBN.replace("-",""))
+    if result:
+        return {"message":"Book removed successfully (Kitap basarili bir sekilde silindi)"}
+    return {"error": "Book Not Found For Deletion (Silmek Icin Kitap Bulunamadi)"}
+
