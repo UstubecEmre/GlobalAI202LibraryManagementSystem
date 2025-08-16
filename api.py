@@ -103,11 +103,17 @@ def get_book_by_ISBN(ISBN: str):
         
 # old version (eski versiyonum, ISBN numarasina gore kitap ekler, govdeyi dahil etmez)
 
-@app.post("/books/{ISBN}")
+@app.post("/books/{ISBN}", status_code = status.HTTP_201_CREATED)
 def add_book_by_ISBN(ISBN:str):
     # add_book method cleans ISBN ()
-    library_instance.add_book(ISBN)
-    return {"message":"Added book (if not already exists) (Kitap EKlendi (Daha onceden yoksa))"}
+    book = library_instance.add_book(ISBN)
+    if book:
+        return book
+    else:
+        raise HTTPException(
+            status_code = status.HTTP_40_BAD_REQUEST,
+            detail = "Book couldn't be added (Kitap Eklenemedi)"
+        )
 
 
 # add_book manuelly 
