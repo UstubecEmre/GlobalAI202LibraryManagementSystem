@@ -48,6 +48,23 @@ def test_add_book_manually():
     assert created_book["title"] == book["title"]
     assert created_book["author"] == book["author"]
      
-#%% delete 
+#%% delete book
+def test_delete_book_by_ISBN():
+    ISBN = "978-605-384-433-4"
+    ISBN = ISBN.replace("-","")
+    
+    response = client.delete("/books/{ISBN}")
+    assert response.status_code == status.HTTP_200_OK
+    
+    removed_book = response.json()
+    
+    # should return None (None dönmeli)
+    book = library_instance.find_book(ISBN)
+    assert book is None
+    
+    assert removed_book["ISBN"] == book["ISBN"]
+    assert removed_book["title"] == book["title"]
+    assert removed_book["author"] == book["author"]
+    
 
      
