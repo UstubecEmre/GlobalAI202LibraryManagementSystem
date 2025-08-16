@@ -5,10 +5,7 @@ from fastapi import (FastAPI, # for FastAPI instance
                      Path, 
                      HTTPException, # for handle exception
                      status # for HTTP status codes
-                     
-                     
-                     
-                     )
+                    )
 from pydantic import BaseModel, Field
 
 from library import Library
@@ -54,10 +51,10 @@ async def lifespan(app: FastAPI):
  
 #%% create an instance
 app = FastAPI(
-    "title":"Emre Ustubec Basic Library Management System",
-    "desciption": "A Basic FastAPI Example",
-    "version":"1.0.0",
-    "lifespan": lifespan
+    title = "Emre Ustubec Basic Library Management System",
+    desciption = "A Basic FastAPI Example",
+    version = "1.0.0",
+    lifespan =  lifespan
 )
 
 # create an instance from Library
@@ -91,7 +88,7 @@ def get_book_by_ISBN(ISBN: str):
         return book # response_model
     else:
         raise HTTPException(
-            status = status.HTTP_404_NOT_FOUND,
+            status_code = status.HTTP_404_NOT_FOUND,
             detail = "No Book Found With That ISBN Number (Bu ISBN Numarasina Ait Kitap Bulunamadi) "
         )
         
