@@ -111,7 +111,7 @@ def add_book_by_ISBN(ISBN:str):
         return book
     else:
         raise HTTPException(
-            status_code = status.HTTP_40_BAD_REQUEST,
+            status_code = status.HTTP_400_BAD_REQUEST,
             detail = "Book couldn't be added (Kitap Eklenemedi)"
         )
 
@@ -131,9 +131,9 @@ def add_book_manuelly(request: BookRequest):
 
 @app.delete("/books/{ISBN}")
 def delete_book_by_ISBN(ISBN: str):
-    result = library_instance.remove_book(ISBN.replace("-",""))
-    if result:
-        return {"message":"Book removed successfully (Kitap basarili bir sekilde silindi)"}
+    book = library_instance.remove_book(ISBN.replace("-",""))
+    if book:
+        return book # show deleted book
     else:
         raise HTTPException(
             status_code = status.HTTP_404_NOT_FOUND,

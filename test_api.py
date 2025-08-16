@@ -48,4 +48,6 @@ def test_add_book_manually():
     assert created_book["title"] == book["title"]
     assert created_book["author"] == book["author"]
      
+#%% delete 
+
      
