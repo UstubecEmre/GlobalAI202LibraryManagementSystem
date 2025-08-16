@@ -17,13 +17,22 @@ from typing import List # for response_model
 #%% create pydantic Book class
 
 class Book(BaseModel):
-    ISBN : str = Field(min_length = 10, max_length = 17, description = "Book ISBN Number")
+    ISBN : str = Field(..., regex = r"^\d{10,17}$", description = "Book ISBN Number") # Field(#min_length = 10, max_length = 17, description = "Book ISBN Number")
     title: str = Field(min_length = 1, description = "Book Title")
     author : str = Field(min_length = 1, description = "Book Author")
 
 
 
+class BookRequest(BaseModel):
+    ISBN: str
+    
 
+""" regex regex="^\d{10,17}$" )=> 
+^ => starts with (baslasin)
+\d{10-17} => Returns a match where the string contains digits (numbers from 10-17) (10-17 arasi degerleri iceren eslesmeleri dondurur)
+$ => ends with (bitsin)
+
+"""
 
 
 
@@ -52,7 +61,7 @@ async def lifespan(app: FastAPI):
 #%% create an instance
 app = FastAPI(
     title = "Emre Ustubec Basic Library Management System",
-    desciption = "A Basic FastAPI Example",
+    description = "A Basic FastAPI Example",
     version = "1.0.0",
     lifespan =  lifespan
 )
@@ -92,7 +101,7 @@ def get_book_by_ISBN(ISBN: str):
             detail = "No Book Found With That ISBN Number (Bu ISBN Numarasina Ait Kitap Bulunamadi) "
         )
         
-    
+# old version (eski versiyonum, ISBN numarasina gore kitap ekler, govdeyi dahil etmez)
 
 @app.post("/books/{ISBN}")
 def add_book_by_ISBN(ISBN:str):
@@ -100,6 +109,19 @@ def add_book_by_ISBN(ISBN:str):
     library_instance.add_book(ISBN)
     return {"message":"Added book (if not already exists) (Kitap EKlendi (Daha onceden yoksa))"}
 
+
+# add_book manuelly 
+@app.post("/books", status_code = status.HTTP_201_CREATED, response_model = Book)
+def add_book_manuelly(request: BookRequest):
+    book = library_instance.add_book(request.ISBN)
+    if book:
+        return book
+    raise HTTPException(
+        status_code = status.HTTP_404_BAD_REQUEST,
+        detail = "Book couldn't be added (Kitap Eklenemedi)"
+    )
+
+    
 
 @app.delete("/books/{ISBN}")
 def delete_book_by_ISBN(ISBN: str):
