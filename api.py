@@ -1,8 +1,17 @@
 #%% import required libraries
-from fastapi import FastAPI, Body, Query, Path
+from fastapi import (FastAPI, # for FastAPI instance 
+                     Body, # for endpoint
+                     Query, 
+                     Path, 
+                     HTTPException, # for handle exception
+                     status # for HTTP status codes
+                     
+                     
+                     
+                     )
 from pydantic import BaseModel, Field
-from library import Library
 
+from library import Library
 import asyncio
 from contextlib import asynccontextmanager
 #%% create pydantic Book class
@@ -74,7 +83,11 @@ def get_book_by_ISBN(ISBN: str):
     if book:
         return {"book":book.__dict__} # convert to JSON object
     else:
-        return {"error":"Book Not Found(Kitap Bulunamadi)"}
+        raise HTTPException(
+            status = status.HTTP_404_NOT_FOUND,
+            detail = "No Book Found With That ISBN Number (Bu ISBN Numarasina Ait Kitap Bulunamadi) "
+        )
+        
     
 
 @app.post("/books/{ISBN}")
@@ -89,6 +102,11 @@ def delete_book_by_ISBN(ISBN: str):
     result = library_instance.remove_book(ISBN.replace("-",""))
     if result:
         return {"message":"Book removed successfully (Kitap basarili bir sekilde silindi)"}
-    return {"error": "Book Not Found For Deletion (Silmek Icin Kitap Bulunamadi)"}
+    else:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = "Book Not Found (Kitap Bulunamadi)"
+        )
+            
 
 
