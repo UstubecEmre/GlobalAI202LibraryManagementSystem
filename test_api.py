@@ -86,4 +86,32 @@ def test_get_books():
     books = response.json()
     
     # assert total books in the _books_list
+    assert len(books) == 2
+    
+    # test all params 
+    assert book1["ISBN"] == "1234567890123"
+    assert book1["title"] == "Test Book 1"
+    assert book1["author"] == "Emre Ustubec"
+    
+    assert book2["ISBN"] == "1234567890124"
+    assert book2["title"] == "Test Book 2"
+    assert book2["author"] == "GlobalAI"
+
+
+#%% get book by ISBN Number
+def test_get_book_by_ISBN():
+    ISBN = "9781410444035"
+    response = client.get(f"/books/{ISBN}")
+    
+    # Check status code
+    assert response.status_code == status.HTTP_200_OK
+    
+    getted_book = response.json()
+    book = library_instance.find_book(ISBN)
+    
+    # find_book returns Book object (Book nesnesi olusturuyor, bu nedenle . ile ulas)
+    assert getted_book["ISBN"] == book.ISBN
+    assert getted_book["title"] == book.title
+    assert getted_book["author"] == book.author
+    
     
