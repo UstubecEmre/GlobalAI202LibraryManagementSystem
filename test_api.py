@@ -2,6 +2,7 @@
 import pytest 
 from fastapi.testclient import TestClient
 from fastapi import status
+from unittest.mock import patch
 from api import (app,
                  Book, 
                  add_book_by_ISBN,
@@ -22,8 +23,19 @@ def clear_library():
 client = TestClient(app)
 
 # test add_book_by_ISBN => post endpoint
-def test_add_book_by_ISBN():
+# I get an error. We will use mock => unittest.mock import patch
+
+@patch("library.httpx.get") # library.py icerisindeki httpx.get'i moclamaya yariyormus
+def test_add_book_by_ISBN(mock_get):
     ISBN = "978-605-384-535-5"
+    # Set mock_response (mock geri donus degerini ayarla)
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = {
+        f"ISBN:{ISBN}": {
+            "title":"API Test Book",
+            "authors":[{"name":"Chat GPT"}]
+        }
+    }
     
     response = client.post(f"/books/{ISBN}")
     
@@ -34,9 +46,9 @@ def test_add_book_by_ISBN():
     
     book = library_instance.find_book(ISBN)
     
-    assert created_book["ISBN"] == book["ISBN"]
-    assert created_book["title"] == book["title"]
-    assert created_book["author"] == book["author"]
+    assert created_book["ISBN"] == ISBN
+    assert created_book["title"] == "API Test Book"
+    assert created_book["author"] == "Chat GPT"
     
     
     
@@ -67,7 +79,9 @@ def test_add_book_manually_success():
 
 
 #%% test missing fields
+
 def test_add_book_manually_missing_fields():
+    ISBN = "9786053845355"
     response = client.post("/books",
                            json = {
                                "ISBN": "1234567891486",
