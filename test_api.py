@@ -125,7 +125,7 @@ def test_get_books():
     # test all params 
     assert books[0]["ISBN"] == book1.ISBN
     assert books[0]["title"] == book1.title
-    assert books[0]["author"] == book1.title
+    assert books[0]["author"] == book1.author
     
     assert books[1]["ISBN"] == book2.ISBN #"1234567890124"
     assert books[1]["title"] == book2.title #"Test Book 2"
