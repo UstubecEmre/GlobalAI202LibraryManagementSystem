@@ -24,6 +24,7 @@ client = TestClient(app)
 # test add_book_by_ISBN => post endpoint
 def test_add_book_by_ISBN():
     ISBN = "978-605-384-535-5"
+    
     response = client.post(f"/books/{ISBN}")
     
     # check status code
@@ -77,6 +78,7 @@ def test_add_book_manually_missing_fields():
     assert response.status_code == status.HTTP_400_BAD_REQUEST 
     data = response.json() # convert json
     assert "cannot be blank" in data["detail"]
+    
 #%% delete book
 def test_delete_book_by_ISBN():
     ISBN = "978-605-384-433-4"
@@ -102,8 +104,8 @@ def test_delete_book_by_ISBN():
 
 #%% get books
 def test_get_books():
-    # create a null list
-    library_instance._book_lists = []
+    # you can create a null list, if you are not going to pytest.fixture
+    # library_instance._book_lists = []
     book1 = Book(ISBN = "1234567890123",title ="Test Book 1", author ="Emre Ustubec")
     book2 = Book(ISBN = "1234567890124",title = "Test Book 2",author = "GlobalAI")
     
@@ -121,18 +123,24 @@ def test_get_books():
     assert len(books) == 2
     
     # test all params 
-    assert books[0]["ISBN"] == "1234567890123"
-    assert books[0]["title"] == "Test Book 1"
-    assert books[0]["author"] == "Emre Ustubec"
+    assert books[0]["ISBN"] == book1.ISBN
+    assert books[0]["title"] == book1.title
+    assert books[0]["author"] == book1.title
     
-    assert books[1]["ISBN"] == "1234567890124"
-    assert books[1]["title"] == "Test Book 2"
-    assert books[1]["author"] == "GlobalAI"
+    assert books[1]["ISBN"] == book2.ISBN #"1234567890124"
+    assert books[1]["title"] == book2.title #"Test Book 2"
+    assert books[1]["author"] == book2.author # "GlobalAI"
 
 
 #%% get book by ISBN Number
 def test_get_book_by_ISBN():
     ISBN = "9781410444035"
+    
+    # Add book manually first
+    book_to_add = Book(ISBN=ISBN, title="Get Test Book", author="Tester")
+    
+    library_instance._book_lists.append(book_to_add)
+    
     response = client.get(f"/books/{ISBN}")
     
     # Check status code
