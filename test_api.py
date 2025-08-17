@@ -38,9 +38,9 @@ def test_add_book_manually_success():
     # act (eylem)
     response = client.post("/books",
                            json= {
-                            "ISBN" = "9780091935993",
-                            "title" = "The Missing",
-                            "author" = "Jane Casey"
+                            "ISBN" : "9780091935993",
+                            "title" : "The Missing",
+                            "author" : "Jane Casey"
     })
     
     # assert status_code(dogrula)
@@ -53,24 +53,41 @@ def test_add_book_manually_success():
     assert created_book["ISBN"] == "9780091935993"
     assert created_book["title"] == "The Missing"
     assert created_book["author"] == "Jane Casey"
-    
+
+
+#%% test missing fields
+def test_add_book_manually_missing_fields():
+    response = client.post("/books",
+                           json = {
+                               "ISBN": "1234567891486",
+                               "title":"",
+                               "author":"Unknown (Bilinmiyor)"
+                           })
+    # assert title and author
+    assert response.status_code == status.HTTP_400_BAD_REQUEST 
+    data = response.json() # convert json
+    assert "cannot be blank" in data["detail"]
 #%% delete book
 def test_delete_book_by_ISBN():
     ISBN = "978-605-384-433-4"
-    ISBN = ISBN.replace("-","")
+    ISBN_cleaned = ISBN.replace("-","")
     
-    response = client.delete("/books/{ISBN}")
+    
+    book_to_add = Book(ISBN=ISBN_cleaned, title="Delete Test Book", author="Tester Emre")
+    library_instance._book_lists.append(book_to_add)
+    
+    response = client.delete(f"/books/{ISBN_cleaned}")
     assert response.status_code == status.HTTP_200_OK
     
     removed_book = response.json()
     
     # should return None (None dönmeli)
-    book = library_instance.find_book(ISBN)
+    book = library_instance.find_book(ISBN_cleaned)
     assert book is None
     
-    assert removed_book["ISBN"] == book["ISBN"]
-    assert removed_book["title"] == book["title"]
-    assert removed_book["author"] == book["author"]
+    assert removed_book["ISBN"] == ISBN_cleaned
+    assert removed_book["title"] == "Delete Test Book"
+    assert removed_book["author"] == "Tester Emre"
     
 
 #%% get books
@@ -94,13 +111,13 @@ def test_get_books():
     assert len(books) == 2
     
     # test all params 
-    assert book1["ISBN"] == "1234567890123"
-    assert book1["title"] == "Test Book 1"
-    assert book1["author"] == "Emre Ustubec"
+    assert books[0]["ISBN"] == "1234567890123"
+    assert books[0]["title"] == "Test Book 1"
+    assert books[0]["author"] == "Emre Ustubec"
     
-    assert book2["ISBN"] == "1234567890124"
-    assert book2["title"] == "Test Book 2"
-    assert book2["author"] == "GlobalAI"
+    assert books[1]["ISBN"] == "1234567890124"
+    assert books[1]["title"] == "Test Book 2"
+    assert books[1]["author"] == "GlobalAI"
 
 
 #%% get book by ISBN Number
