@@ -17,7 +17,7 @@ from typing import List # for response_model
 #%% create pydantic Book class
 
 class Book(BaseModel):
-    ISBN : str = Field(..., regex = r"^\d{10,17}$", description = "Book ISBN Number") # Field(#min_length = 10, max_length = 17, description = "Book ISBN Number")
+    ISBN : str = Field(..., pattern = r"^\d{10,17}$", description = "Book ISBN Number") # Field(#min_length = 10, max_length = 17, description = "Book ISBN Number")
     title: str = Field(min_length = 1, description = "Book Title")
     author : str = Field(min_length = 1, description = "Book Author")
 
