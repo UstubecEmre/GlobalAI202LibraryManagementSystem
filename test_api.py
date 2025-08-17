@@ -154,4 +154,10 @@ def test_get_book_by_ISBN():
     assert getted_book["title"] == book.title
     assert getted_book["author"] == book.author
     
-    
+
+
+#%% if the ISBN is incorrect
+def test_get_wrong_ISBN():
+    response = client.get("/books/9999999999999")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+     
