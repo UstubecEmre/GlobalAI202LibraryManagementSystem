@@ -160,4 +160,17 @@ def test_get_book_by_ISBN():
 def test_get_wrong_ISBN():
     response = client.get("/books/9999999999999")
     assert response.status_code == status.HTTP_404_NOT_FOUND
-     
+
+
+
+def test_add_book_empty_author():
+    response = client.post("/books",
+                           json = {
+                               "ISBN": "9876543219870",
+                               "title":"Being CEO",
+                               "author":""
+                           })
+    
+    assert response.status_code == status.HTTP_201_CREATED
+    data = response.json()
+    assert data["author"] == "Unknown (Bilinmiyor)"
