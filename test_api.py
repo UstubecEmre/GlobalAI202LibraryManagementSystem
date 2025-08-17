@@ -31,24 +31,29 @@ def test_add_book_by_ISBN():
     
 #%% test manuelly add book
 # using body
-def test_add_book_manually():
-    ISBN = "978-605-384-433-4"
-    payload = {"ISBN": ISBN}
+def test_add_book_manually_success():
+    
+    #payload = {"ISBN": ISBN}
     
     # act (eylem)
-    response = client.post("/books", json = payload)
+    response = client.post("/books",
+                           json= {
+                            "ISBN" = "9780091935993",
+                            "title" = "The Missing",
+                            "author" = "Jane Casey"
+    })
     
     # assert status_code(dogrula)
     assert response.status_code == status.HTTP_201_CREATED
     
     created_book = response.json()
-    book = library_instance.find_book(ISBN)
+    
     
     # assert
-    assert created_book["ISBN"] == book["ISBN"]
-    assert created_book["title"] == book["title"]
-    assert created_book["author"] == book["author"]
-     
+    assert created_book["ISBN"] == "9780091935993"
+    assert created_book["title"] == "The Missing"
+    assert created_book["author"] == "Jane Casey"
+    
 #%% delete book
 def test_delete_book_by_ISBN():
     ISBN = "978-605-384-433-4"
