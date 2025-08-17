@@ -87,13 +87,11 @@ class Library():
     def add_book_manually(self, ISBN: str, title: str, author:str):
         if not ISBN or not title or not author:
             raise ValueError("ISBN, title, and author cannot be blank")
-            book = Book(ISBN = ISBN, title = title, author= author)
-            self._book_lists.append(book)
-        else:
-            return "Title, author and ISBN cannot be blank"
-        
-        
+           
+        book = Book(ISBN = ISBN, title = title, author= author)
+        self._book_lists.append(book)
         return book
+        
         
 
     # remove book by ISBN
