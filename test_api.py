@@ -3,6 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 from fastapi import status
 from unittest.mock import patch
+from library import Library
 from api import (app,
                  Book, 
                  add_book_by_ISBN,
@@ -11,11 +12,11 @@ from api import (app,
                  library_instance) 
 # %%
 #%% Pytest fixture to reset library before each test (Her test oncesinde kutuphaneyi sifirla)
-@pytest.fixture(autouse=True)
-def clear_library():
-    library_instance._book_lists = []
-    yield # run codes
-    library_instance._book_lists = []
+@pytest.fixture()
+def test_library(tmp_path):
+    fake_file = tmp_path/"test_library.json"
+    fake_file.write_text("[]") # create a null json 
+    return Library(str(fake_file))
 
 
 
