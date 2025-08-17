@@ -99,8 +99,8 @@ class Library():
         for book in self._book_lists:
             if book.ISBN == ISBN:
                 self._book_lists.remove(book)
-                return True 
-        return False 
+                return book 
+        return None 
     
         # or
         """ 
