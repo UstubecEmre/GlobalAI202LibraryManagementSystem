@@ -25,6 +25,8 @@ class Book(BaseModel):
 
 class BookRequest(BaseModel):
     ISBN: str
+    title: str
+    author: str 
     
 
 """ regex regex="^\d{10,17}$" )=> 
@@ -119,12 +121,17 @@ def add_book_by_ISBN(ISBN:str):
 # add_book manuelly 
 @app.post("/books", status_code = status.HTTP_201_CREATED, response_model = Book)
 def add_book_manuelly(request: BookRequest):
-    book = library_instance.add_book(request.ISBN)
-    if book:
+    try:
+        book = library_instance.add_book(
+            ISBN = request.ISBN,
+            title = request.title,
+            author = request.author
+        )
         return book
-    raise HTTPException(
-        status_code = status.HTTP_404_BAD_REQUEST,
-        detail = "Book couldn't be added (Kitap Eklenemedi)"
+    except Exception as e :
+        raise HTTPException(
+        status_code = status.HTTP_400_BAD_REQUEST,
+        detail = str(e)
     )
 
     
