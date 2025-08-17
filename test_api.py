@@ -1,4 +1,5 @@
 #%% import required libraries and classes
+import pytest 
 from fastapi.testclient import TestClient
 from fastapi import status
 from api import (app,
@@ -7,8 +8,17 @@ from api import (app,
                  add_book_manuelly, 
                  delete_book_by_ISBN, 
                  library_instance) 
-# %% test
+# %%
+#%% Pytest fixture to reset library before each test (Her test oncesinde kutuphaneyi sifirla)
+@pytest.fixture(autouse=True)
+def clear_library():
+    library_instance._book_lists = []
+    yield # run codes
+    library_instance._book_lists = []
 
+
+
+#%% test
 client = TestClient(app)
 
 # test add_book_by_ISBN => post endpoint
