@@ -1,7 +1,8 @@
 #%% import required libraries and classes
 from fastapi.testclient import TestClient
 from fastapi import status
-from api import (app, 
+from api import (app,
+                 Book, 
                  add_book_by_ISBN,
                  add_book_manuelly, 
                  delete_book_by_ISBN, 
@@ -67,4 +68,22 @@ def test_delete_book_by_ISBN():
     assert removed_book["author"] == book["author"]
     
 
-     
+#%% get books
+def test_get_books():
+    # create a null list
+    library_instance._book_lists = []
+    book1 = Book(ISBN = "1234567890123",title ="Test Book 1", author ="Emre Ustubec")
+    book2 = Book(ISBN = "1234567890124",title = "Test Book 2",author = "GlobalAI")
+    
+    library_instance._book_lists.extend([book1, book2])
+    
+    # make a get request 
+    response = client.get("/books")
+    # check status code
+    assert response.status_code == status.HTTP_200_OK
+    
+    # convert to json
+    books = response.json()
+    
+    # assert total books in the _books_list
+    
