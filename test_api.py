@@ -11,23 +11,30 @@ from api import (app,
                  delete_book_by_ISBN, 
                  library_instance) 
 # %%
-#%% Pytest fixture to reset library before each test (Her test oncesinde kutuphaneyi sifirla)
-@pytest.fixture()
-def test_library(tmp_path):
-    fake_file = tmp_path/"test_library.json"
-    fake_file.write_text("[]") # create a null json 
-    return Library(str(fake_file))
 
 
 
 #%% test
 client = TestClient(app)
 
+#%% Pytest fixture to reset library before each test (Her test oncesinde kutuphaneyi sifirla)
+@pytest.fixture()
+
+# Unfortunately, ı got an error again. old codes effects library.json file. (library.json icindeki verileri surekli bos hale getiriyordu)
+def test_library(tmp_path,monkeypatch):
+    fake_file = tmp_path/"test_library.json"
+    fake_file.write_text("[]") # create a null json 
+    test_lib =  Library(str(fake_file))
+    
+    # add monkeypatch
+    monkeypatch.setattr("api", "library_instance", test_lib)
+
+    return test_lib
 # test add_book_by_ISBN => post endpoint
 # I get an error. We will use mock => unittest.mock import patch
 
 @patch("library.httpx.get") # library.py icerisindeki httpx.get'i moclamaya yariyormus
-def test_add_book_by_ISBN(mock_get):
+def test_add_book_by_ISBN(mock_get, test_library):
     ISBN = "978-605-384-535-5"
     # Set mock_response (mock geri donus degerini ayarla)
     mock_get.return_value.status_code = 200
@@ -55,7 +62,7 @@ def test_add_book_by_ISBN(mock_get):
     
 #%% test manuelly add book
 # using body
-def test_add_book_manually_success():
+def test_add_book_manually_success(test_library):
     
     #payload = {"ISBN": ISBN}
     
@@ -81,7 +88,7 @@ def test_add_book_manually_success():
 
 #%% test missing fields
 
-def test_add_book_manually_missing_fields():
+def test_add_book_manually_missing_fields(test_library):
     ISBN = "9786053845355"
     response = client.post("/books",
                            json = {
@@ -95,7 +102,7 @@ def test_add_book_manually_missing_fields():
     assert "cannot be blank" in data["detail"]
     
 #%% delete book
-def test_delete_book_by_ISBN():
+def test_delete_book_by_ISBN(test_library):
     ISBN = "978-605-384-433-4"
     ISBN_cleaned = ISBN.replace("-","")
     
@@ -118,7 +125,7 @@ def test_delete_book_by_ISBN():
     
 
 #%% get books
-def test_get_books():
+def test_get_books(test_library):
     # you can create a null list, if you are not going to pytest.fixture
     # library_instance._book_lists = []
     book1 = Book(ISBN = "1234567890123",title ="Test Book 1", author ="Emre Ustubec")
@@ -148,7 +155,7 @@ def test_get_books():
 
 
 #%% get book by ISBN Number
-def test_get_book_by_ISBN():
+def test_get_book_by_ISBN(test_library):
     ISBN = "9781410444035"
     
     # Add book manually first
@@ -172,13 +179,13 @@ def test_get_book_by_ISBN():
 
 
 #%% if the ISBN is incorrect
-def test_get_wrong_ISBN():
+def test_get_wrong_ISBN(test_library):
     response = client.get("/books/9999999999999")
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 
-def test_add_book_empty_author():
+def test_add_book_empty_author(test_library):
     response = client.post("/books",
                            json = {
                                "ISBN": "9876543219870",
