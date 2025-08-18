@@ -46,7 +46,7 @@ class Library():
             title = book_info.get("title","Unknown (Bilinmiyor)")
             
             # GET authors
-            authors = book_info.get("authors","Unknown (Bilinmiyor)")
+            authors = book_info.get("authors",[])#"Unknown (Bilinmiyor)")
             
            # use list comp to get author names
            
@@ -72,18 +72,20 @@ class Library():
             new_book = Book(ISBN= clean_ISBN, title = title, author= author)
             # check, has already exists
             if clean_ISBN in [book.ISBN for book in self._book_lists]:
-                print("This book has already exists")
-            else:    
-                self._book_lists.append(new_book)
+                raise ValueError("This book has already exists")
+            self._book_lists.append(new_book)
+            self.save_books()
+            return new_book 
+                
             # add main menu
             #print(f"Book added (Kitap Eklendi) {title} - {author}")
         except httpx.HTTPStatusError as e:
-            print(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
+            raise ValueError(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
             return None
             
         except httpx.RequestError as e:
-            print(f"Request Error (İstek Hatası): {e}")
-            return None
+            raise ValueError(f"Request Error (İstek Hatası): {e}")
+            # return None
     
     
     #add book manually
@@ -96,6 +98,7 @@ class Library():
            author = "Unknown (Bilinmiyor)"
         book = Book(ISBN = ISBN, title = title, author= author)
         self._book_lists.append(book)
+        self.save_books()
         return book
         
         
@@ -105,6 +108,7 @@ class Library():
         for book in self._book_lists:
             if book.ISBN == ISBN:
                 self._book_lists.remove(book)
+                self.save_books()
                 return book 
         return None 
     
@@ -122,7 +126,11 @@ class Library():
             print("❌ There are no books in the library yet. (Henüz Kitap Yok)")
         else:
             for book in self._book_lists:
-                print(book) #print(f"{book.__str__()}")
+                print(book) #print(f"{book.__str__()}")"""
+                
+                """ or other way 1. Harry Potter
+                for idx,book in enumerate(self._book_lists, start = 1):
+                    print(f"{idx}. {book}")"""
             
     
     # find book by ISBN
@@ -134,7 +142,7 @@ class Library():
                 
     # load books
     def load_books(self):
-        self._book_lists = []
+        #self._book_lists = []
         if os.path.exists(self.file_name):
                 with open(self.file_name, mode= "r", encoding= "utf-8") as file:
                     try:
