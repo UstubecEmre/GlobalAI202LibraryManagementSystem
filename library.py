@@ -6,6 +6,7 @@ from book_oop import Book
 import json 
 import os 
 import httpx 
+from fastapi import HTTPException
 
 
 OPEN_LIBRARY_URL = "https://openlibrary.org/isbn/"
@@ -87,12 +88,12 @@ class Library():
     
     #add book manually
     def add_book_manually(self, ISBN: str, title: str, author:str):
-        if not ISBN or not title :
-            raise ValueError("ISBN and title cannot be blank")
+        if not ISBN or not title:
+            raise HTTPException(status_code = 400, detail = "ISBN and title cannot be blank")
         
-        if not author:
-            author = "Unknown (Bilinmiyor)"
-           
+        if not author.strip():
+            #raise HTTPException(status_code = 400, detail = {"author": "Unknown (Bilinmiyor)"})
+           author = "Unknown (Bilinmiyor)"
         book = Book(ISBN = ISBN, title = title, author= author)
         self._book_lists.append(book)
         return book
