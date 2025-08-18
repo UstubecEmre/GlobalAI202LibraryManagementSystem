@@ -34,7 +34,7 @@ def test_book_add(monkeypatch):
         
         return_value={
             "title": "Efficient Library Management System",
-            "authors": [{"key":"Emre Üstübeç"}]
+            "authors": [{"name":"Emre Üstübeç"}]
         
         }
     )
@@ -69,11 +69,12 @@ def test_remove_book():
     
     # enter ısbn no
     removed = library.remove_book("1234567912345")
-    print(f"Was the Book (ISBN: 1234567912345) deleted (Silindi mi?): {removed}")
-    
+    # print(f"Was the Book (ISBN: 1234567912345) deleted (Silindi mi?): {removed}")
+    assert removed is not None
     
     # returns True if the book is removed, (kitap silinirse True döndür)
-    assert removed is True 
+    
+    assert removed.ISBN == "1234567912345"
   
     assert len(library._book_lists) == 0
     
@@ -81,11 +82,11 @@ def test_remove_book():
     # Removing non-existing book (ISBN numarası kütüphanede yoksa)
     not_removed = library.remove_book("1472583692149")
     
-    print(f"Was the book (ISBN:1472583692149) deleted (Silindi mi?)")
+    # print(f"Was the book (ISBN:1472583692149) deleted (Silindi mi?): {not_removed}")
     
     # assert 
-    assert not_removed is False
-    
+    # assert not_removed is False
+    assert not_removed is None 
     print("✅ Test passed successfully. Final list: (Test Basarili, Nihali Liste: )", library._book_lists)
 
 
