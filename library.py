@@ -78,9 +78,11 @@ class Library():
             #print(f"Book added (Kitap Eklendi) {title} - {author}")
         except httpx.HTTPStatusError as e:
             print(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
+            return None
             
         except httpx.RequestError as e:
             print(f"Request Error (İstek Hatası): {e}")
+            return None
     
     
     #add book manually
