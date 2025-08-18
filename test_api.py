@@ -1,5 +1,6 @@
 #%% import required libraries and classes
 import pytest 
+import api
 from fastapi.testclient import TestClient
 from fastapi import status
 from unittest.mock import patch
@@ -26,16 +27,21 @@ def test_library(tmp_path,monkeypatch):
     fake_file.write_text("[]") # create a null json 
     test_lib =  Library(str(fake_file))
     
-    # add monkeypatch
-    monkeypatch.setattr("api", "library_instance", test_lib)
-
+    # add monkeypatch >= get an error
+    
+    monkeypatch.setattr(api, "library_instance", test_lib)
+    # monkeypatch.setattr("api.library_instance", test_lib)
+    """global library_instance
+    library_instance = test_lib"""
+    
     return test_lib
 # test add_book_by_ISBN => post endpoint
 # I get an error. We will use mock => unittest.mock import patch
 
 @patch("library.httpx.get") # library.py icerisindeki httpx.get'i moclamaya yariyormus
 def test_add_book_by_ISBN(mock_get, test_library):
-    ISBN = "978-605-384-535-5"
+    ISBN = "9786053845355"
+    #ISBN_cleaned = ISBN.replace("-","")
     # Set mock_response (mock geri donus degerini ayarla)
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = {
@@ -51,12 +57,16 @@ def test_add_book_by_ISBN(mock_get, test_library):
     assert response.status_code == status.HTTP_201_CREATED
     
     created_book = response.json()
-    
-    book = library_instance.find_book(ISBN)
-    
     assert created_book["ISBN"] == ISBN
     assert created_book["title"] == "API Test Book"
     assert created_book["author"] == "Chat GPT"
+    
+    
+    book = test_library.find_book(ISBN)
+    
+    assert book.ISBN == ISBN
+    assert book.title == "API Test Book"
+    assert book.author == "Chat GPT"
     
     
     
@@ -67,9 +77,11 @@ def test_add_book_manually_success(test_library):
     #payload = {"ISBN": ISBN}
     
     # act (eylem)
+    ISBN = "9780091935993"
+    ISBN_cleaned = ISBN.replace("-","")
     response = client.post("/books",
                            json= {
-                            "ISBN" : "9780091935993",
+                            "ISBN" : ISBN_cleaned ,
                             "title" : "The Missing",
                             "author" : "Jane Casey"
     })
@@ -81,10 +93,11 @@ def test_add_book_manually_success(test_library):
     
     
     # assert
-    assert created_book["ISBN"] == "9780091935993"
+    assert created_book["ISBN"] == ISBN_cleaned
     assert created_book["title"] == "The Missing"
     assert created_book["author"] == "Jane Casey"
-
+    
+    assert test_library.find_book(ISBN_cleaned) is not None
 
 #%% test missing fields
 
@@ -92,7 +105,7 @@ def test_add_book_manually_missing_fields(test_library):
     ISBN = "9786053845355"
     response = client.post("/books",
                            json = {
-                               "ISBN": "1234567891486",
+                               "ISBN": ISBN,
                                "title":"",
                                "author":"Unknown (Bilinmiyor)"
                            })
@@ -108,7 +121,7 @@ def test_delete_book_by_ISBN(test_library):
     
     
     book_to_add = Book(ISBN=ISBN_cleaned, title="Delete Test Book", author="Tester Emre")
-    library_instance._book_lists.append(book_to_add)
+    test_library._book_lists.append(book_to_add)
     
     response = client.delete(f"/books/{ISBN_cleaned}")
     assert response.status_code == status.HTTP_200_OK
@@ -116,7 +129,7 @@ def test_delete_book_by_ISBN(test_library):
     removed_book = response.json()
     
     # should return None (None dönmeli)
-    book = library_instance.find_book(ISBN_cleaned)
+    book = test_library.find_book(ISBN_cleaned)
     assert book is None
     
     assert removed_book["ISBN"] == ISBN_cleaned
@@ -128,10 +141,10 @@ def test_delete_book_by_ISBN(test_library):
 def test_get_books(test_library):
     # you can create a null list, if you are not going to pytest.fixture
     # library_instance._book_lists = []
-    book1 = Book(ISBN = "1234567890123",title ="Test Book 1", author ="Emre Ustubec")
-    book2 = Book(ISBN = "1234567890124",title = "Test Book 2",author = "GlobalAI")
+    book1 = Book(ISBN = "1234567890123".replace("-",""),title ="Test Book 1", author ="Emre Ustubec")
+    book2 = Book(ISBN = "1234567890124".replace("-",""),title = "Test Book 2",author = "GlobalAI")
     
-    library_instance._book_lists.extend([book1, book2])
+    test_library._book_lists.extend([book1, book2])
     
     # make a get request 
     response = client.get("/books")
@@ -156,12 +169,12 @@ def test_get_books(test_library):
 
 #%% get book by ISBN Number
 def test_get_book_by_ISBN(test_library):
-    ISBN = "9781410444035"
-    
+    ISBN = "9781410444035".replace("-","")
+    # ISBN_cleaned = ISBN.replace("-","")
     # Add book manually first
     book_to_add = Book(ISBN=ISBN, title="Get Test Book", author="Tester")
     
-    library_instance._book_lists.append(book_to_add)
+    test_library._book_lists.append(book_to_add)
     
     response = client.get(f"/books/{ISBN}")
     
@@ -169,7 +182,7 @@ def test_get_book_by_ISBN(test_library):
     assert response.status_code == status.HTTP_200_OK
     
     getted_book = response.json()
-    book = library_instance.find_book(ISBN)
+    book = test_library.find_book(ISBN)
     
     # find_book returns Book object (Book nesnesi olusturuyor, bu nedenle . ile ulas)
     assert getted_book["ISBN"] == book.ISBN
@@ -180,19 +193,23 @@ def test_get_book_by_ISBN(test_library):
 
 #%% if the ISBN is incorrect
 def test_get_wrong_ISBN(test_library):
-    response = client.get("/books/9999999999999")
+    ISBN = "9999999999999".replace("-","")
+    #ISBN_cleaned = ISBN.replace("-","")
+    response = client.get(f"/books/{ISBN}")
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
 
 def test_add_book_empty_author(test_library):
+    ISBN = "9876543219870".replace("-","")
+    #ISBN_cleaned = ISBN.replace("-","")
     response = client.post("/books",
                            json = {
-                               "ISBN": "9876543219870",
-                               "title":"Being CEO",
-                               "author":""
+                               "ISBN": ISBN,
+                               "title":"Being CEO", 
+                               "author":"" #pydantic, min lenght must be 1 character
                            })
     
-    assert response.status_code == status.HTTP_201_CREATED
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
     data = response.json()
     assert data["author"] == "Unknown (Bilinmiyor)"
