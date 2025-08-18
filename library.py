@@ -87,8 +87,8 @@ class Library():
     
     #add book manually
     def add_book_manually(self, ISBN: str, title: str, author:str):
-        if not ISBN or not title or not author:
-            raise ValueError("ISBN, title, and author cannot be blank")
+        if not ISBN or not title :
+            raise ValueError("ISBN and title cannot be blank")
         
         if not author:
             author = "Unknown (Bilinmiyor)"
