@@ -125,59 +125,96 @@ Kullanılan test dosyaları ise şu şekildedir:
 - library_test.py: library.py dosyasında yer alan metotları test etmektedir.
   İçerisinde:
   create_library_sample()
+
   test_book_add(monkeypatch)
+
   test_remove_book()
+
   test_list_books()
+
   test_find_book()
+
   test_load_books(tmp_path)
+
   test_save_books(tmp_path)
+
   bulunmaktadır.
+
   Burada library.json dosyamız yapılan değişikliklerden etkilenmesin diye, tmp_path yani geçici bir dosya yolu kullanılmıştır.
 
 - test_api.py
   İçinde yer alan fonksiyonlar da şu şekildedir:
+
   test_library(tmp_path,monkeypatch)
+
   test_add_book_by_ISBN(mock_get, test_library)
+
   test_add_book_manually_success(test_library)
+
   test_add_book_manually_missing_fields(test_library)
+
   test_delete_book_by_ISBN(test_library)
+
   test_get_books(test_library)
+
   test_get_book_by_ISBN(test_library)
+
   test_get_wrong_ISBN(test_library)
+
   test_add_book_empty_author(test_library)
-  fonksiyonları bulunmaktadır. Burada da ana dosyamız olan (library.json) etkilenmemesi amacıyla geçici bir test dosyası üzerinde işlemler gerçekleştirilmiştir.
+
+  fonksiyonları bulunmaktadır.
+
+  Burada da ana dosyamız olan (library.json) etkilenmemesi amacıyla geçici bir test dosyası üzerinde işlemler gerçekleştirilmiştir.
 
 ## Uygulamaya Ait Ekran Görüntüleri
 
 Konsol İçin:
-![Console Menu](assets\console\main_console_menu.png)
-![Console Add Book Example](assets\console\main_console_add_book.png)
-![Console Find Book Example](assets\console\main_console_find_book.png)
-![Console List Books Example](assets\console\main_console_list_books.png)
-![Console Remove Book Example](assets\console\main_console_remove_book.png)
-![Console Quitting](assets\console\main_console_quiting.png)
 
+![Console Menu](assets/console/main_console_menu.png)
+
+![Console Add Book Example](assets/console/main_console_add_book.png)
+
+![Console Find Book Example](assets/console/main_console_find_book.png)
+
+![Console List Books Example](assets/console/main_console_list_books.png)
+
+![Console Remove Book Example](assets/console/main_console_remove_book.png)
+
+![Console Quitting](assets/console/main_console_quiting.png)
+
+<hr>
 FastAPI İçin
-![FastAPI First Looking](assets\api\fast_api_first_looking.png)
 
-![FastAPI Get Books Example](assets\api\fast_api_get_books_example.png)
-![FastAPI Get Books Response](assets\api\fast_api_get_books_response.png)
+![FastAPI First Looking](assets/api/fast_api_first_looking.png)
 
-![FastAPI Add Book By ISBN](assets\api\fast_api_add_book_ISBN_example.png)
+![FastAPI Get Books Example](assets/api/fast_api_get_books_example.png)
 
-![FastAPI Add Book Manually](assets\api\fast_api_add_book_manually.png)
+![FastAPI Get Books Response](assets/api\fast_api_get_books_response.png)
 
-![FastAPI Delete Book First Looking](assets\api\fast_api_delete_book_by_ISBN_first_llooking.png)
-![FastAPI Delete Book Response](assets\api\fast_api_delete_book_by_ISBN_result.png)
+![FastAPI Add Book By ISBN](assets/api/fast_api_add_book_ISBN_example.png)
 
-![FastAPI Add Book By ISBN Example](assets\api\fast_api_get_book_ISBN_example.png)
-![FastAPI Add Book By ISBN Response](assets\api\fast_api_get_book_ISBN_response.png)
+![FastAPI Add Book Manually](assets/api/fast_api_add_book_manually.png)
+
+![FastAPI Delete Book First Looking](assets/api/fast_api_delete_book_by_ISBN_first_llooking.png)
+
+![FastAPI Delete Book Response](assets/api/fast_api_delete_book_by_ISBN_result.png)
+
+![FastAPI Add Book By ISBN Example](assets/api/fast_api_get_book_ISBN_example.png)
+
+![FastAPI Add Book By ISBN Response](assets/api/fast_api_get_book_ISBN_response.png)
+
+<hr>
 
 Test İçin:
-![Book OOP Test](assets\test\pytest_book_oop_test.png)
-![Pytest Book Test](assets\test\pytest_book_test.png)
-![Pytest Library Tests](assets\test\pytest_library_tests.png)
-!["Pytest API Tests"](assets\test\pytest_test_api.png)
+
+![Book OOP Test](assets/test/pytest_book_oop_test.png)
+
+![Pytest Book Test](assets/test/pytest_book_test.png)
+
+![Pytest Library Tests](assets/test/pytest_library_tests.png)
+
+!["Pytest API Tests"](assets/test/pytest_test_api.png)
 
 ## Gelecek Planlar ve Geliştirme Önerileri
 
@@ -192,6 +229,7 @@ Kullanıcıların terminal üzerinden gerçekleştireceği işlemler için HTML,
 Test, FastAPI gibi bazı konularda çok az bir bilgim olduğundan dolayı araştırma gereği duydum. Bu araştırmalarımda kullandığım bazı kaynaklar şu şekildedir:
 
 - Global AI Uğurcan hocamızın ders pdf'leri
+- Turkish AI Hub => Youtube Kanalı => Python 202 Bootcamp dersleri
 - Tech With Tim => Youtube kanalı => pytest (Please Learn How To Write Tests in Python)
 - Pixegami => Youtube kanalı => pytest, fastapi (Python FastAPI Tutorial: Build a REST API in 15 Minutes)
 - NeuralNine => Youtube kanalı => FastAPI Full Crash Course
