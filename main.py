@@ -3,7 +3,9 @@
 
 from book_oop import Book
 from library import Library
-
+from fastapi import FastAPI
+import uvicorn
+from api import app
 
 def main():
     library = Library()
@@ -69,7 +71,7 @@ def main():
         
 
 # check
-if "__name__" == "__main__":
-    main()
-        
+if __name__ == "__main__":
+    # uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True) you are going to show API, you can use (Web servisinde gormek istersen bunu kullanabilirsin)
+      main()  
 # %%
