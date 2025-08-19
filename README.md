@@ -143,7 +143,7 @@ Kullanılan test dosyaları ise şu şekildedir:
   Burada library.json dosyamız yapılan değişikliklerden etkilenmesin diye, tmp_path yani geçici bir dosya yolu kullanılmıştır.
 
 - test_api.py
-- 
+ 
   İçinde yer alan fonksiyonlar da şu şekildedir:
 
   test_library(tmp_path,monkeypatch)
