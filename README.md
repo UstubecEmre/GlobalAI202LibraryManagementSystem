@@ -150,34 +150,34 @@ Kullanılan test dosyaları ise şu şekildedir:
 ## Uygulamaya Ait Ekran Görüntüleri
 
 Konsol İçin:
-![Console Menu](assets\console\main_console_menu.png)
-![Console Add Book Example](assets\console\main_console_add_book.png)
-![Console Find Book Example](assets\console\main_console_find_book.png)
-![Console List Books Example](assets\console\main_console_list_books.png)
-![Console Remove Book Example](assets\console\main_console_remove_book.png)
-![Console Quitting](assets\console\main_console_quiting.png)
+![Console Menu](assets/console_ss/main_console_menu.png)
+![Console Add Book Example](assets/console_ss/main_console_add_book.png)
+![Console Find Book Example](assets/console_ss/main_console_find_book.png)
+![Console List Books Example](assets/console_ss/main_console_list_books.png)
+![Console Remove Book Example](assets/console_ss/main_console_remove_book.png)
+![Console Quitting](assets/console_ss/main_console_quiting.png)
 
 FastAPI İçin
-![FastAPI First Looking](assets\api\fast_api_first_looking.png)
+![FastAPI First Looking](assets/api_ss\fast_api_first_looking.png)
 
-![FastAPI Get Books Example](assets\api\fast_api_get_books_example.png)
-![FastAPI Get Books Response](assets\api\fast_api_get_books_response.png)
+![FastAPI Get Books Example](assets/api_ss/fast_api_get_books_example.png)
+![FastAPI Get Books Response](assets/api_ss/fast_api_get_books_response.png)
 
-![FastAPI Add Book By ISBN](assets\api\fast_api_add_book_ISBN_example.png)
+![FastAPI Add Book By ISBN](assets/api_ss/fast_api_add_book_ISBN_example.png)
 
-![FastAPI Add Book Manually](assets\api\fast_api_add_book_manually.png)
+![FastAPI Add Book Manually](assets/api_ss/fast_api_add_book_manually.png)
 
-![FastAPI Delete Book First Looking](assets\api\fast_api_delete_book_by_ISBN_first_llooking.png)
-![FastAPI Delete Book Response](assets\api\fast_api_delete_book_by_ISBN_result.png)
+![FastAPI Delete Book First Looking](assets/api_ss/fast_api_delete_book_by_ISBN_first_llooking.png)
+![FastAPI Delete Book Response](assets/api_ss/fast_api_delete_book_by_ISBN_result.png)
 
-![FastAPI Add Book By ISBN Example](assets\api\fast_api_get_book_ISBN_example.png)
-![FastAPI Add Book By ISBN Response](assets\api\fast_api_get_book_ISBN_response.png)
+![FastAPI Add Book By ISBN Example](assets/api_ss/fast_api_get_book_ISBN_example.png)
+![FastAPI Add Book By ISBN Response](assets/api_ss/fast_api_get_book_ISBN_response.png)
 
 Test İçin:
-![Book OOP Test](assets\test\pytest_book_oop_test.png)
-![Pytest Book Test](assets\test\pytest_book_test.png)
-![Pytest Library Tests](assets\test\pytest_library_tests.png)
-!["Pytest API Tests"](assets\test\pytest_test_api.png)
+![Book OOP Test](assets/test_ss/pytest_book_oop_test.png)
+![Pytest Book Test](assets/test_ss/pytest_book_test.png)
+![Pytest Library Tests](assets/test_ss/pytest_library_tests.png)
+!["Pytest API Tests"](assets/test_ss/pytest_test_api.png)
 
 ## Gelecek Planlar ve Geliştirme Önerileri
 
