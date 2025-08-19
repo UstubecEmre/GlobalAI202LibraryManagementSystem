@@ -99,7 +99,7 @@ def get_book_by_ISBN(ISBN: str):
         return book # response_model
     else:
         raise HTTPException(
-            status_code = status.HTTP_404_NOT_FOUND,
+            status_code = status.HTTP_400_BAD_REQUEST,
             detail = "No Book Found With That ISBN Number (Bu ISBN Numarasina Ait Kitap Bulunamadi) "
         )
         
@@ -108,21 +108,23 @@ def get_book_by_ISBN(ISBN: str):
 @app.post("/books/{ISBN}", status_code = status.HTTP_201_CREATED)
 def add_book_by_ISBN(ISBN:str):
     # add_book method cleans ISBN ()
-    book = library_instance.add_book(ISBN)
-    if book:
-        return book
-    else:
+    try:
+        book = library_instance.add_book(ISBN)
+        if not book:
+            raise ValueError("Book could not be added (Kitap Eklenemedi)")
+        return book 
+    except ValueError as e:
         raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = "Book couldn't be added (Kitap Eklenemedi)"
-        )
+                status_code = status.HTTP_400_BAD_REQUEST,
+                detail = str(e)
+            )
 
 
 # add_book manuelly 
 @app.post("/books", status_code = status.HTTP_201_CREATED, response_model = Book)
 def add_book_manuelly(request: BookRequest):
     try:
-        book = library_instance.add_book(
+        book = library_instance.add_book_manually(
             ISBN = request.ISBN,
             title = request.title,
             author = request.author
