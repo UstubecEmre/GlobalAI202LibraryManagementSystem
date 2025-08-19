@@ -20,6 +20,7 @@ def create_library_sample():
     
 def test_book_add(monkeypatch):
     library = Library(file_name= "test_library.json")
+    ISBN = "0000000000001"
     
     # Mock => Bu, istediğimiz metot ve özellikleri taklit edebileceğimiz boş bir sahte nesne.
     mock_response = Mock()
@@ -33,10 +34,12 @@ def test_book_add(monkeypatch):
         # => return_value parametresi bu metodun döndüreceği değeri belirliyor.
         
         return_value={
+            f"ISBN:{ISBN}":{
             "title": "Efficient Library Management System",
             "authors": [{"name":"Emre Üstübeç"}]
         
         }
+            }
     )
     
     
@@ -48,20 +51,33 @@ def test_book_add(monkeypatch):
     (Artik kod httpx.get(...) cagirildiginda gercek HTTP istegi yerine  mock_response donecektir)
     
     """ 
-    monkeypatch.setattr("httpx.get", lambda url: mock_response)
+    monkeypatch.setattr("httpx.get", lambda url: mock_response) #return mock_response (mock_reponse, httpx.get cagrildiginda donsun)
     
-    library.add_book("1234567891230")
+    new_book = library.add_book(ISBN=ISBN)
     
     # check length of book list
+    # test assertions (testleri dogrula)
     assert len(library._book_lists) == 1
+    assert new_book.ISBN == ISBN
+    assert new_book.title == "Efficient Library Management System"
+    assert new_book.author == "Emre Üstübeç"
     
-    # select first item
+    
+    # check book_list
+    book_in_list = library.find_book(ISBN)
+    assert book_in_list is not None
+    assert book_in_list.ISBN == ISBN
+    assert book_in_list.title == "Efficient Library Management System"
+    assert book_in_list.author == "Emre Üstübeç"
+    
+    """# select first item
     book = library._book_lists[0]
     
     # assert title and author
+    assert 
     assert book.title == "Efficient Library Management System"
     assert book.author == "Emre Üstübeç" 
-
+"""
 def test_remove_book():
     # create an instance
     library = create_library_sample()

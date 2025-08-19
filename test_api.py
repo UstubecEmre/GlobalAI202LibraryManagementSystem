@@ -196,7 +196,7 @@ def test_get_wrong_ISBN(test_library):
     ISBN = "9999999999999".replace("-","")
     #ISBN_cleaned = ISBN.replace("-","")
     response = client.get(f"/books/{ISBN}")
-    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
 
@@ -210,6 +210,6 @@ def test_add_book_empty_author(test_library):
                                "author":"" #pydantic, min lenght must be 1 character
                            })
     
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-    data = response.json()
+    assert response.status_code == status.HTTP_201_CREATED
+    data = response.json() 
     assert data["author"] == "Unknown (Bilinmiyor)"
