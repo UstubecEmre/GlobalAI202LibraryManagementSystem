@@ -1,0 +1,17 @@
+# ==============================
+# Python Project - Git Ignore
+# Library Management System
+# ==============================
+
+
+# Virtual environment folders(Sanal ortam klasorleri)
+venv/
+.venv/
+
+# Virtual Environment Variables (Ortam değişkenleri)
+.env
+.env.*
+
+# Python cache files (cache dosyaları)
+__pycache__/
+*.pyc
