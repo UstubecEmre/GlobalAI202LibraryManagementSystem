@@ -1,47 +1,82 @@
 [
-    {
-        "ISBN": "9780590353427",
-        "title": "Harry Potter and the Sorcerer's Stone",
-        "author": "J. K. Rowling"
-    },
-    {
-        "ISBN": "9780439064866",
-        "title": "Harry Potter and the Chamber of Secrets",
-        "author": "J. K. Rowling"
-    },
-    {
-        "ISBN": "9780439136358",
-        "title": "Harry Potter and the Prisoner of Azkaban",
-        "author": "J. K. Rowling"
-    },
-    {
-        "ISBN": "9780439139595",
-        "title": "Harry Potter and the Goblet of Fire",
-        "author": "J. K. Rowling,Jim Kay"
-    },
-    {
-        "ISBN": "9780439784542",
-        "title": "Harry Potter and the Half-Blood Prince",
-        "author": "J. K. Rowling,Mary GrandPré"
-    },
-    {
-        "ISBN": "9780545010221",
-        "title": "How Book Reading Affects Student Performance?",
-        "author": "Tony Kaller"
-    },
-    {
-        "ISBN": "9780553103540",
-        "title": "A Game of Thrones",
-        "author": "George R. R. Martin"
-    },
-    {
-        "ISBN": "9780439358075",
-        "title": "Unknown (Bilinmiyor)",
-        "author": "U,n,k,n,o,w,n, ,(,B,i,l,i,n,m,i,y,o,r,)"
-    },
-    {
-        "ISBN": "9780545010221",
-        "title": "How Book Reading Affects Student Performance?",
-        "author": "Tony Kaller"
-    }
+  {
+    "ISBN": "9789756006054",
+    "title": "Olasılıksız",
+    "author": "Adam Fawer"
+  },
+  {
+    "ISBN": "9789756006238",
+    "title": "Empati",
+    "author": "Adam Fawer Murat Kayi"
+  },
+  {
+    "ISBN": "9786055162740",
+    "title": "Oz",
+    "author": "Adam Fawer"
+  },
+  {
+    "ISBN": "9780008404925",
+    "title": "The Killing Kind",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9780008148980",
+    "title": "Let the dead speak",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9780008149031",
+    "title": "Jane Casey Crime Novel 2",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9780008149086",
+    "title": "Cutting Place (Maeve Kerrigan, Book 9)",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9780008404970",
+    "title": "Jane Casey Untitled Novel 2",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9780008405021",
+    "title": "Stranger in the Family (Maeve Kerrigan, Book 11)",
+    "author": "Jane Casey"
+  },
+  {
+    "ISBN": "9786053845355",
+    "title": "Gordugune Asla Inanma",
+    "author": "Mario Mazzanti"
+  },
+  {
+    "ISBN": "9786053848943",
+    "title": "Oldurmek Icin Mukemmel Bir Gun",
+    "author": "Mario Mazzanti"
+  },
+  {
+    "ISBN": "9786053844626",
+    "title": "Unknown (Bilinmiyor)",
+    "author": "Unknown (Bilinmiyor)"
+  },
+  {
+    "ISBN": "9786053847014",
+    "title": "Olumle Randevu",
+    "author": "Mario Mazzanti"
+  },
+  {
+    "ISBN": "9781614365808",
+    "title": "Superkids Reader 2nd Semester  ISBN-13",
+    "author": "Unknown (Bilinmiyor)"
+  },
+  {
+    "ISBN": "9788853001702",
+    "title": "Sons and lovers",
+    "author": "Unknown (Bilinmiyor)"
+  },
+  {
+    "ISBN": "9780679783268",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen"
+  }
 ]
