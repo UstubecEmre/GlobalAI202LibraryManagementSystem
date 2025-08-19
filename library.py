@@ -14,7 +14,8 @@ OPEN_LIBRARY_URL = "https://openlibrary.org/isbn/"
 
 class Library():
     def __init__(self, file_name = "library.json"):
-        self.file_name = file_name
+        self.file_name = os.path.abspath(file_name)
+        print("Library file path (Dosya Yolu):",self.file_name)
         self._book_lists = []
         self.load_books()
         
@@ -81,7 +82,7 @@ class Library():
             #print(f"Book added (Kitap Eklendi) {title} - {author}")
         except httpx.HTTPStatusError as e:
             raise ValueError(f"Error! Result of API: {e.response.status_code} - Error Information: {e.response.text}") 
-            return None
+            # return None
             
         except httpx.RequestError as e:
             raise ValueError(f"Request Error (İstek Hatası): {e}")
@@ -143,27 +144,40 @@ class Library():
     # load books
     def load_books(self):
         #self._book_lists = []
+        print("Trying to load library.json from (library.json yuklenmeye calisiyor): ",self.file_name )
         if os.path.exists(self.file_name):
                 with open(self.file_name, mode= "r", encoding= "utf-8") as file:
                     try:
                         data = json.load(file)
-                    # self._book_lists = [Book(**book_data) for book_data in data]    
+                        self._book_lists = [Book(**book_data) for book_data in data]    
                 
                 # Create a null list, and add new book objects
-                        for book_data in data:
+                        """for book_data in data:
                             book_obj = Book(**book_data) # convert json format
-                            self._book_lists.append(book_obj)
+                            self._book_lists.append(book_obj)"""
                     except (json.JSONDecodeError, TypeError):
             # return null list (Boş liste döndür)
-                        self._book_lists = []               
+                        print("library.json cannot read. The file may be corrupted (Okunamadi, bozuk olabilir)")
+                        # self._book_lists = []   
+        # file does not exist
+        else:
+            # show warning message (uyari mesaji ver)
+            print("library.json not found, creating new file (library.json dosyasi bulunamadi, yeni dosya)")
+            with open(self.file_name, "w",encoding="utf-8") as file:
+                json.dump([], file, ensure_ascii=False, indent = 4)
+            self._book_lists = []            
 
     def save_books(self):
-        
-        with open(self.file_name, "w", encoding= "utf-8") as file:
-             #dump() => Convert the Python object to JSON format and write it to a file (Python objesini JSON formatına çevirip dosyaya yazar) 
-             # dumps() => returns only a string )(Sadece string döndürür)
-                        
-            # Use list comp to convert to dictionary structure (Liste üreteçleri kullanarak kitap özelliklerini sözlük yapısına dönüştürelim)
-            json.dump([book.__dict__ for book in self._book_lists], file, ensure_ascii=False, indent=4)
+            """if not self._book_lists:
+                 print("Book list empty, existing file is preserved (Kitap Listesi Bos, Mevcut Dosya Korunuyor)")
+                 return        """ # remove this code blocks
+                 
+            with open(self.file_name, "w", encoding= "utf-8") as file:
+                # Use list comp to convert to dictionary structure (Liste üreteçleri kullanarak kitap özelliklerini sözlük yapısına dönüştürelim)
+                json.dump([book.__dict__ for book in self._book_lists], file, ensure_ascii=False, indent=4)
+            
+            #dump() => Convert the Python object to JSON format and write it to a file (Python objesini JSON formatına çevirip dosyaya yazar) 
+            # dumps() => returns only a string )(Sadece string döndürür)
+            
                 
                 
