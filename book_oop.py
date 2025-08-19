@@ -23,31 +23,15 @@ print(f"Author of First Book: {first_book.author}")
 print(f"ISBN Number of First Book: {first_book.ISBN}")
 
 print("total number of objects created: ",first_book.count_book)
+print("*"*75)
+second_book = Book(ISBN = "9789755098340", title = "Siyah Lale", author="Alexandre Dumas")
+
+print(f"Title of Second Book: {second_book.title}")
+print(f"Author of Second Book: {second_book.author}")
+print(f"ISBN Number of Second Book: {second_book.ISBN}")
+
+print("total number of objects created: ",second_book.count_book)
 
 
 
  
-#%% 2. Create a Library Class
-class Library():
-    def __init__(self,book_lists = None, file_name = "library.json"):
-        # check the book_lists (None olup olmadığını kontrol edelim. None ise boş liste döndürsün)
-        self.book_lists = book_lists if self.book_lists is not None else []
-        self.file_name = file_name
-        
-    def add_book(self, book):
-        pass
-
-    def remove_book(self, ISBN):
-        pass
-    
-    def list_books(self):
-        pass
-    
-    def find_book(self, ISBN):
-        pass
-    
-    def load_books(self):
-        pass
-    
-    def save_books(self):
-        pass 
