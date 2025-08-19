@@ -143,6 +143,7 @@ Kullanılan test dosyaları ise şu şekildedir:
   Burada library.json dosyamız yapılan değişikliklerden etkilenmesin diye, tmp_path yani geçici bir dosya yolu kullanılmıştır.
 
 - test_api.py
+- 
   İçinde yer alan fonksiyonlar da şu şekildedir:
 
   test_library(tmp_path,monkeypatch)
@@ -171,10 +172,15 @@ Kullanılan test dosyaları ise şu şekildedir:
 
 Konsol İçin:
 ![Console Menu](assets/console_ss/main_console_menu.png)
+
 ![Console Add Book Example](assets/console_ss/main_console_add_book.png)
+
 ![Console Find Book Example](assets/console_ss/main_console_find_book.png)
+
 ![Console List Books Example](assets/console_ss/main_console_list_books.png)
+
 ![Console Remove Book Example](assets/console_ss/main_console_remove_book.png)
+
 ![Console Quitting](assets/console_ss/main_console_quiting.png)
 
 <hr>
@@ -182,22 +188,31 @@ FastAPI İçin
 ![FastAPI First Looking](assets/api_ss\fast_api_first_looking.png)
 
 ![FastAPI Get Books Example](assets/api_ss/fast_api_get_books_example.png)
+
 ![FastAPI Get Books Response](assets/api_ss/fast_api_get_books_response.png)
+
 
 ![FastAPI Add Book By ISBN](assets/api_ss/fast_api_add_book_ISBN_example.png)
 
 ![FastAPI Add Book Manually](assets/api_ss/fast_api_add_book_manually.png)
 
 ![FastAPI Delete Book First Looking](assets/api_ss/fast_api_delete_book_by_ISBN_first_llooking.png)
+
 ![FastAPI Delete Book Response](assets/api_ss/fast_api_delete_book_by_ISBN_result.png)
 
 ![FastAPI Add Book By ISBN Example](assets/api_ss/fast_api_get_book_ISBN_example.png)
+
 ![FastAPI Add Book By ISBN Response](assets/api_ss/fast_api_get_book_ISBN_response.png)
 
+<hr>
 Test İçin:
+
 ![Book OOP Test](assets/test_ss/pytest_book_oop_test.png)
+
 ![Pytest Book Test](assets/test_ss/pytest_book_test.png)
+
 ![Pytest Library Tests](assets/test_ss/pytest_library_tests.png)
+
 !["Pytest API Tests"](assets/test_ss/pytest_test_api.png)
 
 ## Gelecek Planlar ve Geliştirme Önerileri
