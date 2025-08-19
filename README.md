@@ -186,8 +186,6 @@ Konsol İçin:
 <hr>
 FastAPI İçin
 
-![FastAPI First Looking](assets/api/fast_api_first_looking.png)
-
 ![FastAPI Get Books Example](assets/api/fast_api_get_books_example.png)
 
 ![FastAPI Get Books Response](assets/api\fast_api_get_books_response.png)
