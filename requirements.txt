@@ -1,4 +1,4 @@
-# required libraries and least versions (Gerekli harici kutuphaneler ve surumleri)
+# ---------------- required libraries and least versions (Gerekli harici kutuphaneler ve surumleri) ----------------
 httpx>=0.24.0
 pytest>=8.0.0
 pytest-mock>=3.11.0
